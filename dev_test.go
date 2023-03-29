@@ -79,7 +79,7 @@ func TestGetRuanganFromLokasi_ruangan(t *testing.T) {
 	fmt.Println(ruangan)
 }
 func TestWaktuFromJam(t *testing.T) {
-	jam := "11.00"
+	jam := "09.00"
 	time:=module.GetWaktuFromJam(module.MongoConn, "jam", jam)
 	fmt.Println(time)
 }
