@@ -60,27 +60,27 @@ func TestInsertRuangan(t *testing.T) {
 
 func TestGetMahasiswaFromNama(t *testing.T) {
 	nama := "Al Novianti Ramadhani"
-	biodata:=module.GetMahasiswaFromNama(module.MongoConn, "nama", nama)
+	biodata:=module.GetMahasiswaFromNama(module.MongoConn, "mahasiswa", nama)
 	fmt.Println(biodata)
 }
 func TestGetDosenFromJabatan(t *testing.T) {
 	jabatan := "Wali Dosen D4 Teknik Informatika"
-	walidosen :=module.GetDosenFromJabatan(module.MongoConn, "jabatan", jabatan)
+	walidosen :=module.GetDosenFromJabatan(module.MongoConn, "dosen", jabatan)
 	fmt.Println(walidosen)
 }
 func TestGetLocationFromAlamat(t *testing.T) {
 	alamat := "JL. Sarijadi no 54"
-	lokasi:=module.GetLocationFromAlamat(module.MongoConn, "alamat", alamat)
+	lokasi:=module.GetLocationFromAlamat(module.MongoConn, "location", alamat)
 	fmt.Println(lokasi)
 }
 func TestGetRuanganFromLokasi_ruangan(t *testing.T) {
 	lokasi_ruangan := "Ruang 102"
-	ruangan:=module.GetRuanganFromLokasi_ruangan(module.MongoConn, "lokasi_ruangan", lokasi_ruangan)
+	ruangan:=module.GetRuanganFromLokasi_ruangan(module.MongoConn, "ruangan", lokasi_ruangan)
 	fmt.Println(ruangan)
 }
 func TestWaktuFromJam(t *testing.T) {
 	jam := "09.00"
-	time:=module.GetWaktuFromJam(module.MongoConn, "jam", jam)
+	time:=module.GetWaktuFromJam(module.MongoConn, "waktu", jam)
 	fmt.Println(time)
 }
 
