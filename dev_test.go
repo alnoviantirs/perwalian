@@ -83,4 +83,9 @@ func TestWaktuFromJam(t *testing.T) {
 	time:=module.GetWaktuFromJam(module.MongoConn, "waktu", jam)
 	fmt.Println(time)
 }
+func TestPerwalianFromLokasi(t *testing.T) {
+	lokasi := "ULBI"
+	perwalian :=module.GetPerwalianFromLokasi(module.MongoConn, "perwalian", lokasi)
+	fmt.Println(perwalian)
+}
 

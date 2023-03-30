@@ -121,3 +121,12 @@ func GetWaktuFromJam(db *mongo.Database, col string, jam string) (wkt model.Wakt
 	}
 	return wkt
 }
+func GetPerwalianFromLokasi(db *mongo.Database, col string, lokasi string) (per model.Perwalian) {
+	perwalian := db.Collection(col)
+	filter := bson.M{"lokasi": lokasi}
+	err := perwalian.FindOne(context.TODO(), filter).Decode(&per)
+	if err != nil {
+		fmt.Printf("getPerwalianFromLokasi: %v\n", err)
+	}
+	return per
+}
