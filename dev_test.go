@@ -89,3 +89,7 @@ func TestPerwalianFromLokasi(t *testing.T) {
 	fmt.Println(perwalian)
 }
 
+func TestGetAll(t *testing.T) {
+	data :=module.GetAllPerwalian(module.MongoConn, "perwalian")
+	fmt.Println(data)
+}

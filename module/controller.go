@@ -130,3 +130,17 @@ func GetPerwalianFromLokasi(db *mongo.Database, col string, lokasi string) (per 
 	}
 	return per
 }
+
+func GetAllPerwalian(db *mongo.Database, col string) (data []model.Perwalian) {
+	perwalian := db.Collection(col)
+	filter := bson.M{}
+	cursor, err := perwalian.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetALLData :", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
+}
