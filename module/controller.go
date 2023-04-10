@@ -144,3 +144,68 @@ func GetAllPerwalian(db *mongo.Database, col string) (data []model.Perwalian) {
 	}
 	return
 }
+func GetAllMahasiswa(db *mongo.Database, col string) (data []model.Mahasiswa) {
+	perwalian := db.Collection(col)
+	filter := bson.M{}
+	cursor, err := perwalian.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetALLData :", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
+}
+func GetAllDosen(db *mongo.Database, col string) (data []model.Dosen) {
+	perwalian := db.Collection(col)
+	filter := bson.M{}
+	cursor, err := perwalian.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetALLData :", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
+}
+func GetAllLocation(db *mongo.Database, col string) (data []model.Location) {
+	perwalian := db.Collection(col)
+	filter := bson.M{}
+	cursor, err := perwalian.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetALLData :", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
+}
+func GetAllWaktu(db *mongo.Database, col string) (data []model.Waktu) {
+	perwalian := db.Collection(col)
+	filter := bson.M{}
+	cursor, err := perwalian.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetALLData :", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
+}
+func GetAllRuangan(db *mongo.Database, col string) (data []model.Ruangan) {
+	perwalian := db.Collection(col)
+	filter := bson.M{}
+	cursor, err := perwalian.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetALLData :", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
+}

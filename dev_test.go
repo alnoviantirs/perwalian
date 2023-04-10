@@ -9,19 +9,19 @@ import (
 
 func TestInsertPerwalian(t *testing.T) {
 	time := model.Waktu{
-		Jam : "09.00",
-		Hari : "Selasa",
-		Tanggal : "15 Maret 2023",
+		Jam : "10.00",
+		Hari : "Rabu",
+		Tanggal : "16 Maret 2023",
 	}
 	lokasi := "ULBI"
 	walidosen := model.Dosen{
-		Nama : "Rd. Nuraini Siti Fatonah, S.S., M.Hum. ",
-		Jabatan : "Wali Dosen D4 Teknik Informatika",
+		Nama : "Indra riksa herlambang,. S.Tr.Kom., M.Kom., SFPC",
+		Jabatan : "Wali Dosen D4 Logistik Bisnis",
 	}
 	biodata := model.Mahasiswa {
-		Nama : "Al Novianti Ramadhani",
-		PhoneNumber : "628456456211",
-		Jurusan : "D4 Teknik Informatika",
+		Nama : "No Ae Seol",
+		PhoneNumber : "6284564646124",
+		Jurusan : "D4 Logistik Bisnis",
 	}
 	hasil:=module.InsertPerwalian(module.MongoConn, "perwalian", time, lokasi , walidosen, biodata )
 	fmt.Println(hasil)
@@ -91,5 +91,25 @@ func TestPerwalianFromLokasi(t *testing.T) {
 
 func TestGetAll(t *testing.T) {
 	data :=module.GetAllPerwalian(module.MongoConn, "perwalian")
+	fmt.Println(data)
+}
+func TestGetAllMahasiswa(t *testing.T) {
+	data :=module.GetAllMahasiswa(module.MongoConn, "mahasiswa")
+	fmt.Println(data)
+}
+func TestGetAllDosen(t *testing.T) {
+	data :=module.GetAllDosen(module.MongoConn, "dosen")
+	fmt.Println(data)
+}
+func TestGetAllLocation(t *testing.T) {
+	data :=module.GetAllLocation(module.MongoConn, "location")
+	fmt.Println(data)
+}
+func TestGetAllWaktu(t *testing.T) {
+	data :=module.GetAllWaktu(module.MongoConn, "waktu")
+	fmt.Println(data)
+}
+func TestGetAllRuangan(t *testing.T) {
+	data :=module.GetAllRuangan(module.MongoConn, "ruangan")
 	fmt.Println(data)
 }
