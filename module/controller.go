@@ -7,6 +7,7 @@ import (
 	"os"
 	"github.com/alnoviantirs/perwalian/model"
 	"github.com/aiteung/atdb"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	// "go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -36,45 +37,132 @@ func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (inser
 	return insertResult.InsertedID
 }
 
-func InsertPerwalian(db *mongo.Database, col string, time model.Waktu, lokasi string, walidosen model.Dosen, biodata model.Mahasiswa) (InsertedID interface{}) {
-	var perwalian model.Perwalian
-	perwalian.Time = time
-	perwalian.Lokasi = lokasi
-	perwalian.WaliDosen = walidosen
-	perwalian.Biodata = biodata
-	return InsertOneDoc( db, col, perwalian)
+func InsertPerwalian(db *mongo.Database, col string, time model.Waktu, lokasi string, walidosen model.Dosen, biodata model.Mahasiswa) (insertedID primitive.ObjectID, err error) {
+	perwalian := bson.M{
+		"time":   			 time,
+		"lokasi":  		   lokasi,
+		"walidosen":     walidosen,
+		"biodata":			 biodata,
+	}
+	result, err := db.Collection(col).InsertOne(context.Background(), perwalian)
+	if err != nil {
+		fmt.Printf("InsertPerwalian: %v\n", err)
+		return
+	}
+	insertedID = result.InsertedID.(primitive.ObjectID)
+	return insertedID, nil
 }
-func InsertDosen(db *mongo.Database, col string, nama string, jabatan string) (InsertedID interface{}) {
-	var dosen model.Dosen
-	dosen.Nama = nama
-	dosen.Jabatan = jabatan
-	return InsertOneDoc( db, col, dosen)
+
+func InsertDosen(db *mongo.Database, col string, nama string, jabatan string) (insertedID primitive.ObjectID, err error) {
+	dosen := bson.M{
+		"nama":   			 nama,
+		"jabatan":  		 jabatan,
+	}
+	result, err := db.Collection(col).InsertOne(context.Background(), dosen)
+	if err != nil {
+		fmt.Printf("InsertDosen: %v\n", err)
+		return
+	}
+	insertedID = result.InsertedID.(primitive.ObjectID)
+	return insertedID, nil
 }
-func InsertMahasiswa(db *mongo.Database, col string, nama string, phone_number string, jurusan string) (InsertedID interface{}) {
-	var mahasiswa model.Mahasiswa
-	mahasiswa.Nama = nama
-	mahasiswa.PhoneNumber = phone_number
-	mahasiswa.Jurusan = jurusan
-	return InsertOneDoc(db, col, mahasiswa)
+
+func InsertMahasiswa(db *mongo.Database, col string, nama string, phone_number string, jurusan string) (insertedID primitive.ObjectID, err error) {
+	mahasiswa := bson.M{
+		"nama":   			 nama,
+		"phone_number":  phone_number,
+		"jurusan":     		jurusan,
+	}
+	result, err := db.Collection(col).InsertOne(context.Background(), mahasiswa)
+	if err != nil {
+		fmt.Printf("InsertMahasiswa: %v\n", err)
+		return
+	}
+	insertedID = result.InsertedID.(primitive.ObjectID)
+	return insertedID, nil
 }
-func InsertWaktu(db *mongo.Database, col string, jam string, hari string, tanggal string) (InsertedID interface{}) {
-	var waktu model.Waktu
-	waktu.Jam = jam
-	waktu.Hari = hari
-	waktu.Tanggal = tanggal
-	return InsertOneDoc(db, col, waktu)
+
+func InsertWaktu(db *mongo.Database, col string, jam string, hari string, tanggal string) (insertedID primitive.ObjectID, err error) {
+	waktu := bson.M{
+		"jam":   			 jam,
+		"hari":  		   hari,
+		"tanggal":     tanggal,
+	}
+	result, err := db.Collection(col).InsertOne(context.Background(), waktu)
+	if err != nil {
+		fmt.Printf("InsertWaktu %v\n", err)
+		return
+	}
+	insertedID = result.InsertedID.(primitive.ObjectID)
+	return insertedID, nil
 }
-func InsertLocation(db *mongo.Database, col string, nama_lokasi string, alamat string) (InsertedID interface{}) {
-	var location model.Location
-	location.Nama_lokasi = nama_lokasi
-	location.Alamat = alamat
-	return InsertOneDoc(db, col, location)
+
+func InsertLocation(db *mongo.Database, col string, nama_lokasi string, alamat string) (insertedID primitive.ObjectID, err error) {
+	location:= bson.M{
+		"nama_lokasi":    nama_lokasi,
+		"alamat":  		  alamat,
+	}
+	result, err := db.Collection(col).InsertOne(context.Background(), location)
+	if err != nil {
+		fmt.Printf("InsertLocation %v\n", err)
+		return
+	}
+	insertedID = result.InsertedID.(primitive.ObjectID)
+	return insertedID, nil
 }
-func InsertRuangan(db *mongo.Database, col string, lokasi_ruangan string) (InsertedID interface{}) {
-	var ruangan model.Ruangan
-	ruangan.Lokasi_ruangan = lokasi_ruangan
-	return InsertOneDoc(db, col, ruangan)
+
+func InsertRuangan(db *mongo.Database, col string, lokasi_ruangan string) (insertedID primitive.ObjectID, err error) {
+	ruangan:= bson.M{
+		"lokasi_ruangan":    lokasi_ruangan,
+	}
+	result, err := db.Collection(col).InsertOne(context.Background(), ruangan)
+	if err != nil {
+		fmt.Printf("InsertRuangan %v\n", err)
+		return
+	}
+	insertedID = result.InsertedID.(primitive.ObjectID)
+	return insertedID, nil
 }
+
+// func InsertPerwalian(db *mongo.Database, col string, time model.Waktu, lokasi string, walidosen model.Dosen, biodata model.Mahasiswa) (InsertedID interface{}) {
+// 	var perwalian model.Perwalian
+// 	perwalian.Time = time
+// 	perwalian.Lokasi = lokasi
+// 	perwalian.WaliDosen = walidosen
+// 	perwalian.Biodata = biodata
+// 	return InsertOneDoc( db, col, perwalian)
+// }
+// func InsertDosen(db *mongo.Database, col string, nama string, jabatan string) (InsertedID interface{}) {
+// 	var dosen model.Dosen
+// 	dosen.Nama = nama
+// 	dosen.Jabatan = jabatan
+// 	return InsertOneDoc( db, col, dosen)
+// }
+// func InsertMahasiswa(db *mongo.Database, col string, nama string, phone_number string, jurusan string) (InsertedID interface{}) {
+// 	var mahasiswa model.Mahasiswa
+// 	mahasiswa.Nama = nama
+// 	mahasiswa.PhoneNumber = phone_number
+// 	mahasiswa.Jurusan = jurusan
+// 	return InsertOneDoc(db, col, mahasiswa)
+// }
+// func InsertWaktu(db *mongo.Database, col string, jam string, hari string, tanggal string) (InsertedID interface{}) {
+// 	var waktu model.Waktu
+// 	waktu.Jam = jam
+// 	waktu.Hari = hari
+// 	waktu.Tanggal = tanggal
+// 	return InsertOneDoc(db, col, waktu)
+// }
+// func InsertLocation(db *mongo.Database, col string, nama_lokasi string, alamat string) (InsertedID interface{}) {
+// 	var location model.Location
+// 	location.Nama_lokasi = nama_lokasi
+// 	location.Alamat = alamat
+// 	return InsertOneDoc(db, col, location)
+// }
+// func InsertRuangan(db *mongo.Database, col string, lokasi_ruangan string) (InsertedID interface{}) {
+// 	var ruangan model.Ruangan
+// 	ruangan.Lokasi_ruangan = lokasi_ruangan
+// 	return InsertOneDoc(db, col, ruangan)
+// }
 
 func GetMahasiswaFromNama(db *mongo.Database, col string, nama string) (mhs model.Mahasiswa) {
 	mahasiswa := db.Collection(col)
