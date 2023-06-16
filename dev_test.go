@@ -77,6 +77,25 @@ func TestInsertRuangan(t *testing.T) {
 	fmt.Println(hasil)
 }
 
+// func TestGetPerwalianFromID(t *testing.T) {
+// 	_id := "6423f7398e67b4e741878f01"
+// 	data:=module.GetPerwalianFromID(module.MongoConn, "perwalian", _id)
+// 	fmt.Println(data)
+// }
+
+func TestGetPerwalianFromID(t *testing.T) {
+	id := "642402a0e04e68c3f6724704"
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		t.Fatalf("error converting id to ObjectID: %v", err)
+	}
+	biodata, err := module.GetPerwalianFromID(objectID, module.MongoConn, "perwalian")
+	if err != nil {
+		t.Fatalf("error calling GetPerwalianFromID: %v", err)
+	}
+	fmt.Println(biodata)
+}
+
 func TestGetMahasiswaFromNama(t *testing.T) {
 	nama := "Al Novianti Ramadhani"
 	biodata:=module.GetMahasiswaFromNama(module.MongoConn, "mahasiswa", nama)
