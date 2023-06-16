@@ -3,6 +3,7 @@ package module
 import (
 	"context"
 	"fmt"
+	"errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"os"
 	"github.com/alnoviantirs/perwalian/model"
@@ -124,6 +125,45 @@ func InsertRuangan(db *mongo.Database, col string, lokasi_ruangan string) (inser
 	return insertedID, nil
 }
 
+func UpdatePerwalian(db *mongo.Database, col string, id primitive.ObjectID, time model.Waktu, lokasi string, walidosen model.Dosen, biodata model.Mahasiswa) (err error) {
+	filter := bson.M{"_id": id}
+	update := bson.M{
+		"$set": bson.M{
+			"time":   			 time,
+			"lokasi":  		   lokasi,
+			"walidosen":     walidosen,
+			"biodata":			 biodata,
+		},
+	}
+	result, err := db.Collection(col).UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		fmt.Printf("UpdatePerwalian: %v\n", err)
+		return
+	}
+	if result.ModifiedCount == 0 {
+		err = errors.New("No document found with the specified ID")
+		return
+	}
+	return nil
+}
+
+
+func DeletePerwalianByID(_id primitive.ObjectID, db *mongo.Database, col string) error {
+	perwalian := db.Collection(col)
+	filter := bson.M{"_id": _id}
+
+	result, err := perwalian.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		return fmt.Errorf("error deleting data for ID %s: %s", _id, err.Error())
+	}
+
+	if result.DeletedCount == 0 {
+		return fmt.Errorf("data with ID %s not found", _id)
+	}
+
+	return nil
+}
+
 // func InsertPerwalian(db *mongo.Database, col string, time model.Waktu, lokasi string, walidosen model.Dosen, biodata model.Mahasiswa) (InsertedID interface{}) {
 // 	var perwalian model.Perwalian
 // 	perwalian.Time = time
@@ -172,6 +212,18 @@ func GetMahasiswaFromNama(db *mongo.Database, col string, nama string) (mhs mode
 		fmt.Printf("getMahasiswaFromNama: %v\n", err)
 	}
 	return mhs
+}
+func GetPerwalianFromID(_id primitive.ObjectID, db *mongo.Database, col string) (mahasiswa model.Perwalian, errs error) {
+	perwalian := db.Collection(col)
+	filter := bson.M{"_id": _id}
+	err := perwalian.FindOne(context.TODO(), filter).Decode(&mahasiswa)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return mahasiswa, fmt.Errorf("no data found for ID %s", _id)
+		}
+		return mahasiswa, fmt.Errorf("error retrieving data for ID %s: %s", _id, err.Error())
+	}
+	return mahasiswa, nil
 }
 func GetDosenFromJabatan(db *mongo.Database, col string, jabatan string) (dsn model.Dosen) {
 	dosen := db.Collection(col)

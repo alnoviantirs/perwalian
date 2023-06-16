@@ -4,6 +4,7 @@ import (
 	"fmt"
 	model "github.com/alnoviantirs/perwalian/model"
 	"github.com/alnoviantirs/perwalian/module"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"testing"
 )
 
@@ -23,38 +24,56 @@ func TestInsertPerwalian(t *testing.T) {
 		PhoneNumber : "6284564646124",
 		Jurusan : "D4 Logistik Bisnis",
 	}
-	hasil:=module.InsertPerwalian(module.MongoConn, "perwalian", time, lokasi , walidosen, biodata )
+	hasil, err:=module.InsertPerwalian(module.MongoConn, "perwalian", time, lokasi , walidosen, biodata )
+	if err != nil {
+		t.Errorf("Data berhasil disimpan dengan id %s", hasil.Hex())
+	}
 	fmt.Println(hasil)
 }
 func TestInsertDosen(t *testing.T) {
 	nama := "Rd. Nuraini Siti Fatonah, S.S., M.Hum."
 	jabatan := "Wali Dosen D4 Teknik Informatika"
-	hasil:=module.InsertDosen(module.MongoConn, "dosen", nama, jabatan)
+	hasil, err :=module.InsertDosen(module.MongoConn, "dosen", nama, jabatan)
+	if err != nil {
+		t.Errorf("Data berhasil disimpan dengan id %s", hasil.Hex())
+	}
 	fmt.Println(hasil)
 }
 func TestInsertMahasiswa(t *testing.T) {
 	nama := "Al Novianti Ramadhani"
 	phone_number := "628456456211"
 	jurusan := "D4 Teknik Informatika"
-	hasil:=module.InsertMahasiswa(module.MongoConn, "mahasiswa", nama, phone_number, jurusan)
+	hasil, err:=module.InsertMahasiswa(module.MongoConn, "mahasiswa", nama, phone_number, jurusan)
+	if err != nil {
+		t.Errorf("Data berhasil disimpan dengan id %s", hasil.Hex())
+	}
 	fmt.Println(hasil)
 }
 func TestInsertWaktu(t *testing.T) {
 	jam := "09.00"
 	hari := "Rabu"
 	tanggal := "29 Maret 2023"
-	hasil:=module.InsertWaktu(module.MongoConn, "waktu", jam, hari, tanggal)
+	hasil, err :=module.InsertWaktu(module.MongoConn, "waktu", jam, hari, tanggal)
+	if err != nil {
+		t.Errorf("Data berhasil disimpan dengan id %s", hasil.Hex())
+	}
 	fmt.Println(hasil)
 }
 func TestInsertLocation(t *testing.T) {
 	nama_lokasi := "ULBI"
 	alamat := "JL. Sarijadi no 54"
-	hasil:=module.InsertLocation(module.MongoConn, "location", nama_lokasi, alamat)
+	hasil, err :=module.InsertLocation(module.MongoConn, "location", nama_lokasi, alamat)
+	if err != nil {
+		t.Errorf("Data berhasil disimpan dengan id %s", hasil.Hex())
+	}
 	fmt.Println(hasil)
 }
 func TestInsertRuangan(t *testing.T) {
 	lokasi_ruangan := "Ruang 102"
-	hasil:=module.InsertRuangan(module.MongoConn, "ruangan", lokasi_ruangan)
+	hasil, err:=module.InsertRuangan(module.MongoConn, "ruangan", lokasi_ruangan)
+	if err != nil {
+		t.Errorf("Data berhasil disimpan dengan id %s", hasil.Hex())
+	}
 	fmt.Println(hasil)
 }
 
@@ -112,4 +131,23 @@ func TestGetAllWaktu(t *testing.T) {
 func TestGetAllRuangan(t *testing.T) {
 	data :=module.GetAllRuangan(module.MongoConn, "ruangan")
 	fmt.Println(data)
+}
+
+func TestDeletePerwalianByID(t *testing.T) {
+	id := "648adad330628a7f140274b1" // ID data yang ingin dihapus
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		t.Fatalf("error converting id to ObjectID: %v", err)
+	}
+
+	err = module.DeletePerwalianByID(objectID, module.MongoConn, "perwalian")
+	if err != nil {
+		t.Fatalf("error calling DeletePerwalianByID: %v", err)
+	}
+
+	// Verifikasi bahwa data telah dihapus dengan melakukan pengecekan menggunakan GetPresensiFromID
+	_, err = module.GetPerwalianFromID(objectID, module.MongoConn, "perwalian")
+	if err == nil {
+		t.Fatalf("expected data to be deleted, but it still exists")
+	}
 }
