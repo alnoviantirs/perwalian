@@ -146,6 +146,65 @@ func UpdatePerwalian(db *mongo.Database, col string, id primitive.ObjectID, time
 	}
 	return nil
 }
+func UpdateDosen(db *mongo.Database, col string, id primitive.ObjectID, nama string, jabatan string) (err error) {
+	filter := bson.M{"_id": id}
+	update := bson.M{
+		"$set": bson.M{
+			"nama":   			 nama,
+			"jabatan":  		 jabatan,
+		},
+	}
+	result, err := db.Collection(col).UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		fmt.Printf("UpdateDosen: %v\n", err)
+		return
+	}
+	if result.ModifiedCount == 0 {
+		err = errors.New("No document found with the specified ID")
+		return
+	}
+	return nil
+}
+
+func UpdateMahasiswa(db *mongo.Database, col string, id primitive.ObjectID, nama string, phone_number string, jurusan string) (err error) {
+	filter := bson.M{"_id": id}
+	update := bson.M{
+		"$set": bson.M{
+			"nama":   			 nama,
+			"phone_number":  phone_number,
+			"jurusan":     		jurusan,
+		},
+	}
+	result, err := db.Collection(col).UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		fmt.Printf("UpdateMahasiswa: %v\n", err)
+		return
+	}
+	if result.ModifiedCount == 0 {
+		err = errors.New("No document found with the specified ID")
+		return
+	}
+	return nil
+}
+
+func UpdateRuangan(db *mongo.Database, col string, id primitive.ObjectID, lokasi_ruangan string) (err error) {
+	filter := bson.M{"_id": id}
+	update := bson.M{
+		"$set": bson.M{
+			"lokasi_ruangan":    lokasi_ruangan,
+		},
+	}
+	result, err := db.Collection(col).UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		fmt.Printf("UpdateRuangan: %v\n", err)
+		return
+	}
+	if result.ModifiedCount == 0 {
+		err = errors.New("No document found with the specified ID")
+		return
+	}
+	return nil
+}
 
 
 func DeletePerwalianByID(_id primitive.ObjectID, db *mongo.Database, col string) error {
@@ -153,6 +212,51 @@ func DeletePerwalianByID(_id primitive.ObjectID, db *mongo.Database, col string)
 	filter := bson.M{"_id": _id}
 
 	result, err := perwalian.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		return fmt.Errorf("error deleting data for ID %s: %s", _id, err.Error())
+	}
+
+	if result.DeletedCount == 0 {
+		return fmt.Errorf("data with ID %s not found", _id)
+	}
+
+	return nil
+}
+func DeleteDosenByID(_id primitive.ObjectID, db *mongo.Database, col string) error {
+	dosen := db.Collection(col)
+	filter := bson.M{"_id": _id}
+
+	result, err := dosen.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		return fmt.Errorf("error deleting data for ID %s: %s", _id, err.Error())
+	}
+
+	if result.DeletedCount == 0 {
+		return fmt.Errorf("data with ID %s not found", _id)
+	}
+
+	return nil
+}
+func DeleteMahasiswaByID(_id primitive.ObjectID, db *mongo.Database, col string) error {
+	mahasiswa := db.Collection(col)
+	filter := bson.M{"_id": _id}
+
+	result, err := mahasiswa.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		return fmt.Errorf("error deleting data for ID %s: %s", _id, err.Error())
+	}
+
+	if result.DeletedCount == 0 {
+		return fmt.Errorf("data with ID %s not found", _id)
+	}
+
+	return nil
+}
+func DeleteRuanganByID(_id primitive.ObjectID, db *mongo.Database, col string) error {
+	ruangan := db.Collection(col)
+	filter := bson.M{"_id": _id}
+
+	result, err := ruangan.DeleteOne(context.TODO(), filter)
 	if err != nil {
 		return fmt.Errorf("error deleting data for ID %s: %s", _id, err.Error())
 	}
@@ -224,6 +328,42 @@ func GetPerwalianFromID(_id primitive.ObjectID, db *mongo.Database, col string) 
 		return mahasiswa, fmt.Errorf("error retrieving data for ID %s: %s", _id, err.Error())
 	}
 	return mahasiswa, nil
+}
+func GetDosenFromID(_id primitive.ObjectID, db *mongo.Database, col string) (dosenid model.Dosen, errs error) {
+	dosen := db.Collection(col)
+	filter := bson.M{"_id": _id}
+	err := dosen.FindOne(context.TODO(), filter).Decode(&dosenid)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return dosenid, fmt.Errorf("no data found for ID %s", _id)
+		}
+		return dosenid, fmt.Errorf("error retrieving data for ID %s: %s", _id, err.Error())
+	}
+	return dosenid, nil
+}
+func GetMahasiswaFromID(_id primitive.ObjectID, db *mongo.Database, col string) (mahasiswaid model.Mahasiswa, errs error) {
+	mahasiswa := db.Collection(col)
+	filter := bson.M{"_id": _id}
+	err := mahasiswa.FindOne(context.TODO(), filter).Decode(&mahasiswaid)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return mahasiswaid, fmt.Errorf("no data found for ID %s", _id)
+		}
+		return mahasiswaid, fmt.Errorf("error retrieving data for ID %s: %s", _id, err.Error())
+	}
+	return mahasiswaid, nil
+}
+func GetRuanganFromID(_id primitive.ObjectID, db *mongo.Database, col string) (ruanganid model.Ruangan, errs error) {
+	ruangan := db.Collection(col)
+	filter := bson.M{"_id": _id}
+	err := ruangan.FindOne(context.TODO(), filter).Decode(&ruanganid)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return ruanganid, fmt.Errorf("no data found for ID %s", _id)
+		}
+		return ruanganid, fmt.Errorf("error retrieving data for ID %s: %s", _id, err.Error())
+	}
+	return ruanganid, nil
 }
 func GetDosenFromJabatan(db *mongo.Database, col string, jabatan string) (dsn model.Dosen) {
 	dosen := db.Collection(col)

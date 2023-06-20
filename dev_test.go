@@ -170,3 +170,60 @@ func TestDeletePerwalianByID(t *testing.T) {
 		t.Fatalf("expected data to be deleted, but it still exists")
 	}
 }
+
+func TestDeleteDosenByID(t *testing.T) {
+	id := "6423f66dacc4d0a3ca435d84" // ID data yang ingin dihapus
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		t.Fatalf("error converting id to ObjectID: %v", err)
+	}
+
+	err = module.DeleteDosenByID(objectID, module.MongoConn, "dosen")
+	if err != nil {
+		t.Fatalf("error calling DeleteDosenByID: %v", err)
+	}
+
+	// Verifikasi bahwa data telah dihapus dengan melakukan pengecekan menggunakan GetPresensiFromID
+	_, err = module.GetDosenFromID(objectID, module.MongoConn, "dosen")
+	if err == nil {
+		t.Fatalf("expected data to be deleted, but it still exists")
+	}
+}
+
+func TestDeleteMahasiswaByID(t *testing.T) {
+	id := "6423f66dacc4d0a3ca435d85" // ID data yang ingin dihapus
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		t.Fatalf("error converting id to ObjectID: %v", err)
+	}
+
+	err = module.DeleteMahasiswaByID(objectID, module.MongoConn, "mahasiswa")
+	if err != nil {
+		t.Fatalf("error calling DeleteMahasiswaByID: %v", err)
+	}
+
+	// Verifikasi bahwa data telah dihapus dengan melakukan pengecekan menggunakan GetPresensiFromID
+	_, err = module.GetMahasiswaFromID(objectID, module.MongoConn, "mahasiswa")
+	if err == nil {
+		t.Fatalf("expected data to be deleted, but it still exists")
+	}
+}
+
+func TestDeleteRuanganByID(t *testing.T) {
+	id := "6423f66dacc4d0a3ca435d88" // ID data yang ingin dihapus
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		t.Fatalf("error converting id to ObjectID: %v", err)
+	}
+
+	err = module.DeleteRuanganByID(objectID, module.MongoConn, "ruangan")
+	if err != nil {
+		t.Fatalf("error calling DeleteRuanganByID: %v", err)
+	}
+
+	// Verifikasi bahwa data telah dihapus dengan melakukan pengecekan menggunakan GetPresensiFromID
+	_, err = module.GetRuanganFromID(objectID, module.MongoConn, "ruangan")
+	if err == nil {
+		t.Fatalf("expected data to be deleted, but it still exists")
+	}
+}
