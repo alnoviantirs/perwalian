@@ -40,3 +40,9 @@ type Ruangan struct {
 	ID                primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
 	Lokasi_ruangan    string          `bson:"lokasi_ruangan,omitempty" json:"lokasi_ruangan,omitempty"`
 }
+
+type Admin struct{
+	ID              primitive.ObjectID 	`bson:"_id,omitempty" json:"_id,omitempty"`
+	Username 		string             	`bson:"username,omitempty" json:"username,omitempty"`
+	Password        string          	`bson:"password,omitempty" json:"password,omitempty"`
+}

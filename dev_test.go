@@ -227,3 +227,21 @@ func TestDeleteRuanganByID(t *testing.T) {
 		t.Fatalf("expected data to be deleted, but it still exists")
 	}
 }
+
+//login
+func TestLoginAdmin(t *testing.T) {
+	username := "admin"
+	password := "admin1234"
+
+	authenticated, err := module.LoginAdmin(module.MongoConn, "admin", username, password)
+	if err != nil {
+		t.Errorf("Error authenticating admin: %v", err)
+	}
+
+	if authenticated {
+		fmt.Println("Admin authenticated successfully")
+	} else {
+		t.Errorf("Admin authentication failed")
+	}
+}
+//login

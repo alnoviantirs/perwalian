@@ -489,3 +489,25 @@ func GetAllRuangan(db *mongo.Database, col string) (data []model.Ruangan) {
 	}
 	return
 }
+
+//login
+func LoginAdmin(db *mongo.Database, col string, username string, password string) (authenticated bool, err error) {
+	filter := bson.M{
+		"username": username,
+		"password": password,
+	}
+
+	result, err := db.Collection(col).CountDocuments(context.Background(), filter)
+	if err != nil {
+		fmt.Printf("LoginAdmin: %v\n", err)
+		return false, err
+	}
+
+	if result == 1 {
+		return true, nil
+	}
+
+	return false, nil
+}
+
+//login
