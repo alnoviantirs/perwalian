@@ -245,3 +245,14 @@ func TestLoginAdmin(t *testing.T) {
 	}
 }
 //login
+
+func TestInsertAdmin(t *testing.T) {
+	username := "admin"
+	password := "admin1234"
+
+	insertedID, err := module.InsertAdmin(module.MongoConn, "admin", username, password)
+	if err != nil {
+		t.Errorf("Error inserting data: %v", err)
+	}
+	fmt.Printf("Data berhasil disimpan dengan id %s", insertedID.Hex())
+}
