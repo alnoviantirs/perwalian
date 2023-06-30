@@ -365,6 +365,16 @@ func GetRuanganFromID(_id primitive.ObjectID, db *mongo.Database, col string) (r
 	}
 	return ruanganid, nil
 }
+func GetNohpFromNama(db *mongo.Database, col string, phone_number string) (phn model.Mahasiswa) {
+	mahasiswa := db.Collection(col)
+	filter := bson.M{"phone_number": phone_number}
+	err := mahasiswa.FindOne(context.TODO(), filter).Decode(&phn)
+	if err != nil {
+		fmt.Printf("getNohpFromNama: %v\n", err)
+	}
+	return phn
+}
+
 func GetDosenFromJabatan(db *mongo.Database, col string, jabatan string) (dsn model.Dosen) {
 	dosen := db.Collection(col)
 	filter := bson.M{"jabatan": jabatan}

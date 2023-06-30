@@ -23,6 +23,7 @@ type Perwalian struct {
 	Lokasi       string             `bson:"lokasi,omitempty" json:"lokasi,omitempty"`
 	WaliDosen    Dosen              `bson:"walidosen,omitempty" json:"walidosen,omitempty"`
 	Biodata      Mahasiswa          `bson:"biodata,omitempty" json:"biodata,omitempty"`
+	Lokasi_ruangan      Ruangan          `bson:"lokasi_ruangan,omitempty" json:"lokasi_ruangan,omitempty"`
 }
 
 type Waktu struct {

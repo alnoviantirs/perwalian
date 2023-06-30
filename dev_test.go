@@ -116,6 +116,11 @@ func TestGetRuanganFromLokasi_ruangan(t *testing.T) {
 	ruangan:=module.GetRuanganFromLokasi_ruangan(module.MongoConn, "ruangan", lokasi_ruangan)
 	fmt.Println(ruangan)
 }
+func TestGetNohpFromNama(t *testing.T) {
+	phone_number := "628456456266"
+	mahasiswa:=module.GetNohpFromNama(module.MongoConn, "mahasiswa", phone_number)
+	fmt.Println(mahasiswa)
+}
 func TestWaktuFromJam(t *testing.T) {
 	jam := "09.00"
 	time:=module.GetWaktuFromJam(module.MongoConn, "waktu", jam)
