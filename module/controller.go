@@ -126,14 +126,14 @@ func InsertRuangan(db *mongo.Database, col string, lokasi_ruangan string) (inser
 	return insertedID, nil
 }
 
-func UpdatePerwalian(db *mongo.Database, col string, id primitive.ObjectID, time model.Waktu, lokasi string, walidosen model.Dosen, biodata model.Mahasiswa) (err error) {
+func UpdatePerwalian(db *mongo.Database, col string, id primitive.ObjectID, time model.Waktu, walidosen model.Dosen, biodata model.Mahasiswa, ruangan model.Ruangan) (err error) {
 	filter := bson.M{"_id": id}
 	update := bson.M{
 		"$set": bson.M{
 			"time":   			 time,
-			"lokasi":  		   lokasi,
 			"walidosen":     walidosen,
 			"biodata":			 biodata,
+			"ruangan": ruangan,
 		},
 	}
 	result, err := db.Collection(col).UpdateOne(context.Background(), filter, update)
