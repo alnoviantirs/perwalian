@@ -20,10 +20,9 @@ type Mahasiswa struct {
 type Perwalian struct {
 	ID           primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
 	Time         Waktu             `bson:"time,omitempty" json:"time,omitempty"`	
-	Lokasi       string             `bson:"lokasi,omitempty" json:"lokasi,omitempty"`
 	WaliDosen    Dosen              `bson:"walidosen,omitempty" json:"walidosen,omitempty"`
 	Biodata      Mahasiswa          `bson:"biodata,omitempty" json:"biodata,omitempty"`
-	Lokasi_ruangan      Ruangan          `bson:"lokasi_ruangan,omitempty" json:"lokasi_ruangan,omitempty"`
+	Lokasi_ruangan      Ruangan          `bson:"ruangan,omitempty" json:"ruangan,omitempty"`
 }
 
 type Waktu struct {

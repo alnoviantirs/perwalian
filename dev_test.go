@@ -2,10 +2,11 @@ package perwalian
 
 import (
 	"fmt"
+	"testing"
+
 	model "github.com/alnoviantirs/perwalian/model"
 	"github.com/alnoviantirs/perwalian/module"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"testing"
 )
 
 func TestInsertPerwalian(t *testing.T) {
@@ -14,7 +15,6 @@ func TestInsertPerwalian(t *testing.T) {
 		Hari : "Rabu",
 		Tanggal : "16 Maret 2023",
 	}
-	lokasi := "ULBI"
 	walidosen := model.Dosen{
 		Nama : "Indra riksa herlambang,. S.Tr.Kom., M.Kom., SFPC",
 		Jabatan : "Wali Dosen D4 Logistik Bisnis",
@@ -24,7 +24,10 @@ func TestInsertPerwalian(t *testing.T) {
 		PhoneNumber : "6284564646124",
 		Jurusan : "D4 Logistik Bisnis",
 	}
-	hasil, err:=module.InsertPerwalian(module.MongoConn, "perwalian", time, lokasi , walidosen, biodata )
+	ruangan := model.Ruangan{
+		Lokasi_ruangan : "Ruang 101",
+	}
+	hasil, err:=module.InsertPerwalian(module.MongoConn, "perwalian", time, walidosen, biodata, ruangan)
 	if err != nil {
 		t.Errorf("Data berhasil disimpan dengan id %s", hasil.Hex())
 	}

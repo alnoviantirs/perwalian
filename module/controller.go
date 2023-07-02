@@ -2,12 +2,13 @@ package module
 
 import (
 	"context"
-	"fmt"
 	"errors"
-	"go.mongodb.org/mongo-driver/bson"
+	"fmt"
 	"os"
-	"github.com/alnoviantirs/perwalian/model"
+
 	"github.com/aiteung/atdb"
+	"github.com/alnoviantirs/perwalian/model"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	// "go.mongodb.org/mongo-driver/mongo/options"
@@ -38,12 +39,12 @@ func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (inser
 	return insertResult.InsertedID
 }
 
-func InsertPerwalian(db *mongo.Database, col string, time model.Waktu, lokasi string, walidosen model.Dosen, biodata model.Mahasiswa) (insertedID primitive.ObjectID, err error) {
+func InsertPerwalian(db *mongo.Database, col string, time model.Waktu, walidosen model.Dosen, biodata model.Mahasiswa, ruangan model.Ruangan) (insertedID primitive.ObjectID, err error) {
 	perwalian := bson.M{
 		"time":   			 time,
-		"lokasi":  		   lokasi,
 		"walidosen":     walidosen,
 		"biodata":			 biodata,
+		"ruangan":  ruangan,
 	}
 	result, err := db.Collection(col).InsertOne(context.Background(), perwalian)
 	if err != nil {
